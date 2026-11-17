@@ -1,0 +1,1414 @@
+/* ==========================================================================
+   SIGMA ORANGE CAT — NEUMORPHISM (SOFT UI) DESIGN SYSTEM 🐈
+   Inspired by Reference Neumorphic Kit (Dual Soft Shadows, Inset Wells,
+   Convex Tactile Buttons, Coral-Orange Accents & Smooth Molded Surfaces)
+   ========================================================================== */
+
+:root {
+  /* 1. Neumorphic Canvas & Surface Foundation */
+  --neu-base: #EBECF0;
+  --neu-surface: #EBECF0;
+  --neu-surface-hover: #EEF0F4;
+  --neu-surface-active: #E4E6EA;
+  --neu-surface-sunken: #E2E5EB;
+
+  /* Dual Soft Lighting Shadows (Light Top-Left, Dark Bottom-Right) */
+  --neu-shadow-light: #FFFFFF;
+  --neu-shadow-dark: rgba(163, 177, 198, 0.6);
+  --neu-shadow-dark-soft: rgba(163, 177, 198, 0.45);
+  --neu-shadow-dark-deep: rgba(163, 177, 198, 0.75);
+
+  /* Primary Neumorphic Extrusions (Convex / Raised Surfaces) */
+  --shadow-neu-flat: 7px 7px 15px var(--neu-shadow-dark), -7px -7px 15px var(--neu-shadow-light);
+  --shadow-neu-raised: 10px 10px 22px var(--neu-shadow-dark), -10px -10px 22px var(--neu-shadow-light);
+  --shadow-neu-hover: 12px 12px 26px var(--neu-shadow-dark-deep), -12px -12px 26px var(--neu-shadow-light);
+  --shadow-neu-sm: 4px 4px 8px var(--neu-shadow-dark-soft), -4px -4px 8px var(--neu-shadow-light);
+  --shadow-neu-xs: 2.5px 2.5px 5px var(--neu-shadow-dark-soft), -2.5px -2.5px 5px var(--neu-shadow-light);
+
+  /* Neumorphic Inset / Wells (Concave / Recessed Surfaces) */
+  --shadow-neu-inset: inset 4px 4px 8px var(--neu-shadow-dark), inset -4px -4px 8px var(--neu-shadow-light);
+  --shadow-neu-inset-sm: inset 2.5px 2.5px 5px var(--neu-shadow-dark), inset -2.5px -2.5px 5px var(--neu-shadow-light);
+  --shadow-neu-inset-deep: inset 5px 5px 10px var(--neu-shadow-dark-deep), inset -5px -5px 10px var(--neu-shadow-light);
+
+  /* Coral-Orange Brand Accents (From Reference Neumorphism Kit) */
+  --color-primary-orange: #FF5E3A;
+  --color-deep-orange: #E54B2A;
+  --color-coral-light: #FF8566;
+  --color-orange-glow: rgba(255, 94, 58, 0.35);
+  --color-coral-gradient: linear-gradient(135deg, #FF6847, #F04C28);
+  --color-coral-gradient-active: linear-gradient(135deg, #E54B2A, #D03D1D);
+
+  /* Dark Ink & Accent Shades */
+  --color-dark-brown: #241A15;
+  --color-cream: #FAF4E8;
+  --color-warm-white: #FFFFFF;
+
+  /* Typography Colors */
+  --color-text-main: #2D3748;
+  --color-text-sub: #4A5568;
+  --color-text-muted: #718096;
+
+  /* Category Accents (Harmonious Neumorphic Tints) */
+  --cat-oop: #7C3AED;
+  --cat-core: #059669;
+  --cat-strings: #0284C7;
+  --cat-exceptions: #EA580C;
+
+  /* IDE Dark Chassis */
+  --bg-code-ide: #181D28;
+  --bg-code-header: #0F131D;
+
+  /* Radii */
+  --radius-sm: 10px;
+  --radius-md: 16px;
+  --radius-lg: 24px;
+  --radius-xl: 32px;
+  --radius-full: 9999px;
+
+  /* Fonts */
+  --font-display: 'Outfit', 'Space Grotesk', system-ui, -apple-system, sans-serif;
+  --font-body: 'Inter', system-ui, -apple-system, sans-serif;
+  --font-mono: 'JetBrains Mono', 'Fira Code', Consolas, monospace;
+}
+
+/* ==========================================================================
+   Base & Reset
+   ========================================================================== */
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+  font-size: 16px;
+}
+
+body {
+  font-family: var(--font-body);
+  background-color: var(--neu-base);
+  color: var(--color-text-main);
+  line-height: 1.6;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  overflow-x: hidden;
+  position: relative;
+  /* Smooth neumorphic surface illumination */
+  background-image: 
+    radial-gradient(circle at 10% 10%, rgba(255, 255, 255, 0.7) 0%, transparent 40%),
+    radial-gradient(circle at 90% 90%, rgba(163, 177, 198, 0.15) 0%, transparent 40%);
+  background-attachment: fixed;
+}
+
+/* Floating Subtle Watermarks */
+.bg-silhouette-watermark {
+  position: fixed;
+  pointer-events: none;
+  opacity: 0.08;
+  z-index: 0;
+  transition: opacity 0.3s ease;
+  filter: drop-shadow(2px 2px 4px rgba(163, 177, 198, 0.4));
+}
+
+.bg-silhouette-top-right {
+  top: 90px;
+  right: 30px;
+  width: 140px;
+  transform: rotate(10deg);
+}
+
+.bg-silhouette-bottom-left {
+  bottom: 40px;
+  left: 20px;
+  width: 120px;
+  transform: rotate(-8deg);
+}
+
+/* ==========================================================================
+   Header (Floating Neumorphic Pill Navigation)
+   ========================================================================== */
+
+.site-header {
+  position: sticky;
+  top: 1rem;
+  z-index: 100;
+  width: min(1200px, calc(100% - 2rem));
+  margin: 0 auto 1.5rem;
+  background: var(--neu-surface);
+  box-shadow: var(--shadow-neu-flat);
+  border: 1px solid rgba(255, 255, 255, 0.85);
+  border-radius: var(--radius-full);
+  padding: 0.75rem 1.6rem;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.site-header:hover {
+  box-shadow: var(--shadow-neu-hover);
+}
+
+.header-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.logo-group {
+  display: flex;
+  align-items: center;
+  gap: 0.95rem;
+  text-decoration: none;
+  color: inherit;
+  transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.logo-group:hover {
+  transform: scale(1.02);
+}
+
+.mascot-avatar-wrapper {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: var(--neu-surface);
+  box-shadow: var(--shadow-neu-sm);
+  border: 1px solid rgba(255, 255, 255, 0.9);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  flex-shrink: 0;
+  position: relative;
+  transition: box-shadow 0.2s ease;
+}
+
+.logo-group:hover .mascot-avatar-wrapper {
+  box-shadow: 0 0 0 2px var(--color-orange-glow), var(--shadow-neu-sm);
+}
+
+.logo-text-box {
+  display: flex;
+  flex-direction: column;
+}
+
+.logo-title {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 1.25rem;
+  color: var(--color-text-main);
+  letter-spacing: -0.01em;
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.logo-sub {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--color-deep-orange);
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.header-badges {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+}
+
+.neu-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-family: var(--font-mono);
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: var(--color-text-sub);
+  background: var(--neu-surface);
+  box-shadow: var(--shadow-neu-inset-sm);
+  border-radius: var(--radius-full);
+  padding: 0.4rem 0.95rem;
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  transition: transform 0.2s ease;
+}
+
+.neu-badge:hover {
+  transform: translateY(-1px);
+}
+
+.pulse-cat-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background-color: #10B981;
+  box-shadow: 0 0 6px rgba(16, 185, 129, 0.8);
+  animation: catPulse 2s infinite ease-in-out;
+}
+
+@keyframes catPulse {
+  0%, 100% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.35); opacity: 0.75; }
+}
+
+/* ==========================================================================
+   Main Layout & Views
+   ========================================================================== */
+
+main {
+  flex: 1;
+  width: min(1200px, calc(100% - 2rem));
+  margin: 0 auto 3rem;
+  position: relative;
+  z-index: 2;
+}
+
+.view-section {
+  display: none;
+}
+
+.view-section.active {
+  display: block;
+  animation: fadeInNeu 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes fadeInNeu {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ==========================================================================
+   Hero Box (Molded Neumorphic Card with Master Cat Mascot)
+   ========================================================================== */
+
+.hero-box {
+  background: var(--neu-surface);
+  box-shadow: var(--shadow-neu-raised);
+  border: 1px solid rgba(255, 255, 255, 0.85);
+  border-radius: var(--radius-xl);
+  padding: 2.5rem 2.85rem;
+  margin-bottom: 2.25rem;
+  position: relative;
+  overflow: visible;
+}
+
+.hero-layout {
+  display: grid;
+  grid-template-columns: 1.15fr 0.85fr;
+  gap: 2.75rem;
+  align-items: center;
+}
+
+.hero-content {
+  display: flex;
+  flex-direction: column;
+  gap: 1.15rem;
+}
+
+.hero-tag-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: var(--neu-surface);
+  box-shadow: var(--shadow-neu-sm);
+  border: 1px solid rgba(255, 255, 255, 0.9);
+  border-radius: var(--radius-full);
+  padding: 0.35rem 0.95rem;
+  font-family: var(--font-display);
+  font-size: 0.82rem;
+  font-weight: 800;
+  color: var(--color-deep-orange);
+  width: fit-content;
+  letter-spacing: 0.02em;
+}
+
+.hero-title {
+  font-family: var(--font-display);
+  font-size: clamp(2.2rem, 4.5vw, 3.25rem);
+  font-weight: 900;
+  line-height: 1.15;
+  color: var(--color-text-main);
+  letter-spacing: -0.02em;
+}
+
+.text-orange-gradient {
+  background: linear-gradient(135deg, #FF6847, #F04C28);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  display: inline-block;
+}
+
+.hero-subtitle {
+  font-size: 1.05rem;
+  color: var(--color-text-sub);
+  max-width: 580px;
+  line-height: 1.65;
+}
+
+/* ==========================================================================
+   Hero Mascot Display (Senior Dev Orange Cat in Concentric Dial Chassis)
+   ========================================================================== */
+
+.hero-mascot-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  cursor: pointer;
+  user-select: none;
+  transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.hero-mascot-card:hover {
+  transform: translateY(-4px) scale(1.02);
+}
+
+.hero-cat-avatar {
+  width: min(340px, 90vw);
+  height: auto;
+  aspect-ratio: 1 / 1;
+  border-radius: var(--radius-xl);
+  background: var(--neu-surface);
+  /* Dial-inspired concentric ridges from reference */
+  box-shadow: 
+    0 0 0 4px var(--neu-base),
+    0 0 0 5px rgba(255, 94, 58, 0.25),
+    var(--shadow-neu-raised);
+  border: 1px solid rgba(255, 255, 255, 0.9);
+  overflow: hidden;
+  position: relative;
+  transition: box-shadow 0.25s ease;
+}
+
+.hero-mascot-card:hover .hero-cat-avatar {
+  box-shadow: 
+    0 0 0 4px var(--neu-base),
+    0 0 0 6px rgba(255, 94, 58, 0.45),
+    var(--shadow-neu-hover);
+}
+
+/* Comic Speech Bubble with Soft Neumorphic Styling */
+.hero-cat-bubble {
+  position: relative;
+  margin-bottom: 1.25rem;
+  background: var(--neu-surface);
+  color: var(--color-text-main);
+  box-shadow: var(--shadow-neu-flat);
+  border: 1px solid rgba(255, 255, 255, 0.9);
+  border-radius: var(--radius-md);
+  padding: 0.75rem 1.35rem;
+  font-family: var(--font-display);
+  font-size: 0.95rem;
+  font-weight: 800;
+  text-align: center;
+  max-width: 330px;
+  animation: bubbleWobble 4s ease-in-out infinite;
+}
+
+.hero-cat-bubble::after {
+  content: "";
+  position: absolute;
+  bottom: -10px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 0;
+  height: 0;
+  border-left: 10px solid transparent;
+  border-right: 10px solid transparent;
+  border-top: 10px solid var(--neu-surface);
+  z-index: 2;
+}
+
+@keyframes bubbleWobble {
+  0%, 100% { transform: rotate(0deg); }
+  25% { transform: rotate(-1.5deg); }
+  75% { transform: rotate(1.5deg); }
+}
+
+.hero-cat-tag {
+  margin-top: 0.85rem;
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  background: var(--neu-surface);
+  color: var(--color-deep-orange);
+  box-shadow: var(--shadow-neu-xs);
+  border: 1px solid rgba(255, 255, 255, 0.8);
+  border-radius: var(--radius-full);
+  padding: 0.35rem 0.95rem;
+}
+
+/* SVG Eye Blink Animation */
+@keyframes catBlink {
+  0%, 92%, 100% { transform: scaleY(1); }
+  96% { transform: scaleY(0.1); }
+}
+
+.cat-eyes-animated {
+  transform-origin: 145px 178px;
+  animation: catBlink 4.8s infinite;
+}
+
+/* ==========================================================================
+   Search & Filter Chips (Tactile Inset Wells & Raised Pills)
+   ========================================================================== */
+
+.search-section {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  margin-top: 0.5rem;
+}
+
+.search-box-row {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.search-cat-icon {
+  position: absolute;
+  left: 1.25rem;
+  width: 22px;
+  height: 22px;
+  color: var(--color-deep-orange);
+  pointer-events: none;
+}
+
+.search-input-neu {
+  width: 100%;
+  padding: 1rem 1.2rem 1rem 3.25rem;
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--color-text-main);
+  background: var(--neu-surface);
+  box-shadow: var(--shadow-neu-inset-deep);
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  border-radius: var(--radius-full);
+  outline: none;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.search-input-neu::placeholder {
+  color: var(--color-text-muted);
+  font-weight: 500;
+}
+
+.search-input-neu:focus {
+  box-shadow: 
+    var(--shadow-neu-inset-deep),
+    0 0 0 3px var(--color-orange-glow);
+}
+
+.category-chips-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+.neu-filter-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.55rem 1.15rem;
+  font-family: var(--font-display);
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: var(--color-text-sub);
+  background: var(--neu-surface);
+  box-shadow: var(--shadow-neu-sm);
+  border: 1px solid rgba(255, 255, 255, 0.85);
+  border-radius: var(--radius-full);
+  cursor: pointer;
+  user-select: none;
+  transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.neu-filter-btn:hover {
+  transform: translateY(-2px);
+  color: var(--color-deep-orange);
+  box-shadow: var(--shadow-neu-flat);
+}
+
+.neu-filter-btn:active {
+  transform: translateY(1px);
+  box-shadow: var(--shadow-neu-inset-sm);
+}
+
+/* Active State: Soft Sunken Inset Well with Coral Highlight */
+.neu-filter-btn.active {
+  box-shadow: var(--shadow-neu-inset);
+  background: var(--neu-surface-sunken);
+  color: var(--color-deep-orange);
+  border-color: rgba(255, 94, 58, 0.35);
+  font-weight: 800;
+}
+
+.neu-filter-btn.active .btn-badge {
+  background: var(--color-coral-gradient);
+  color: #FFFFFF;
+  box-shadow: 0 0 6px var(--color-orange-glow);
+}
+
+.btn-badge {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  font-weight: 800;
+  padding: 0.15rem 0.5rem;
+  border-radius: var(--radius-full);
+  background: var(--neu-surface);
+  box-shadow: var(--shadow-neu-inset-sm);
+  color: var(--color-text-main);
+  transition: all 0.2s ease;
+}
+
+/* ==========================================================================
+   Full-Width Experiment Cards Grid (Extruded Neumorphic Tiles)
+   ========================================================================== */
+
+.cards-container {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.neu-card {
+  display: grid;
+  grid-template-columns: auto 1fr auto auto;
+  align-items: center;
+  gap: 1.5rem;
+  padding: 1.35rem 1.75rem;
+  background: var(--neu-surface);
+  box-shadow: var(--shadow-neu-flat);
+  border: 1px solid rgba(255, 255, 255, 0.85);
+  border-radius: var(--radius-lg);
+  text-decoration: none;
+  color: inherit;
+  transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+  position: relative;
+}
+
+.neu-card:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-neu-hover);
+}
+
+.neu-card:active {
+  transform: translateY(1px);
+  box-shadow: var(--shadow-neu-inset);
+}
+
+/* Card Left Number Box (Sunken Inset Pill) */
+.card-exp-num {
+  width: 58px;
+  height: 58px;
+  border-radius: var(--radius-md);
+  background: var(--neu-surface);
+  box-shadow: var(--shadow-neu-inset-sm);
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.card-exp-num .lbl {
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  font-weight: 800;
+  color: var(--color-deep-orange);
+  letter-spacing: 0.05em;
+}
+
+.card-exp-num .val {
+  font-family: var(--font-display);
+  font-size: 1.4rem;
+  font-weight: 900;
+  color: var(--color-text-main);
+  line-height: 1;
+}
+
+/* Card Info Block */
+.card-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.card-tag-row {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.tag-badge {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  font-weight: 800;
+  padding: 0.2rem 0.65rem;
+  border-radius: var(--radius-full);
+  background: var(--neu-surface);
+  box-shadow: var(--shadow-neu-xs);
+  border: 1px solid rgba(255, 255, 255, 0.8);
+}
+
+.tag-badge.oop { color: #7C3AED; }
+.tag-badge.core { color: #059669; }
+.tag-badge.strings { color: #0284C7; }
+.tag-badge.exceptions { color: #EA580C; }
+
+.cat-stamp-text {
+  font-family: var(--font-display);
+  font-size: 0.75rem;
+  font-weight: 800;
+  color: var(--color-deep-orange);
+  letter-spacing: 0.02em;
+}
+
+.card-title-text {
+  font-family: var(--font-display);
+  font-size: 1.15rem;
+  font-weight: 800;
+  line-height: 1.35;
+  color: var(--color-text-main);
+  transition: color 0.2s ease;
+}
+
+.neu-card:hover .card-title-text {
+  color: var(--color-deep-orange);
+}
+
+/* Card Cat Reaction Avatar (Raised Circular Badge) */
+.card-cat-stamp {
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  overflow: hidden;
+  background: var(--neu-surface);
+  box-shadow: var(--shadow-neu-sm);
+  border: 1px solid rgba(255, 255, 255, 0.9);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.neu-card:hover .card-cat-stamp {
+  transform: scale(1.12) rotate(6deg);
+}
+
+/* Action Arrow Box (Modeled after the coral BUY / CH+ buttons) */
+.card-arrow-box {
+  width: 44px;
+  height: 44px;
+  background: var(--neu-surface);
+  box-shadow: var(--shadow-neu-sm);
+  border: 1px solid rgba(255, 255, 255, 0.85);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-text-muted);
+  flex-shrink: 0;
+  transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.neu-card:hover .card-arrow-box {
+  transform: translateX(4px);
+  background: var(--color-coral-gradient);
+  color: #FFFFFF;
+  box-shadow: 4px 4px 12px rgba(240, 76, 40, 0.45), -3px -3px 8px #FFFFFF;
+  border-color: transparent;
+}
+
+/* ==========================================================================
+   Code Page View (Neumorphic Framing & Distraction-Free IDE)
+   ========================================================================== */
+
+.code-layout-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.code-top-nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.btn-back-neu {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.65rem 1.35rem;
+  font-family: var(--font-display);
+  font-size: 0.95rem;
+  font-weight: 800;
+  color: var(--color-text-main);
+  background: var(--neu-surface);
+  box-shadow: var(--shadow-neu-sm);
+  border: 1px solid rgba(255, 255, 255, 0.85);
+  border-radius: var(--radius-full);
+  text-decoration: none;
+  transition: all 0.2s ease;
+}
+
+.btn-back-neu:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-neu-flat);
+  color: var(--color-deep-orange);
+}
+
+.btn-back-neu:active {
+  transform: translateY(1px);
+  box-shadow: var(--shadow-neu-inset-sm);
+}
+
+.btn-back-neu kbd {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  font-weight: 800;
+  padding: 0.15rem 0.5rem;
+  background: var(--neu-surface);
+  box-shadow: var(--shadow-neu-inset-sm);
+  border-radius: 6px;
+  color: var(--color-text-muted);
+}
+
+.code-nav-arrows {
+  display: flex;
+  gap: 0.75rem;
+}
+
+.arrow-nav-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.6rem 1.15rem;
+  font-family: var(--font-display);
+  font-size: 0.88rem;
+  font-weight: 800;
+  color: var(--color-text-main);
+  background: var(--neu-surface);
+  box-shadow: var(--shadow-neu-sm);
+  border: 1px solid rgba(255, 255, 255, 0.85);
+  border-radius: var(--radius-full);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.arrow-nav-btn:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-neu-flat);
+  color: var(--color-deep-orange);
+}
+
+.arrow-nav-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+/* Experiment Meta Box */
+.code-meta-card {
+  background: var(--neu-surface);
+  box-shadow: var(--shadow-neu-raised);
+  border: 1px solid rgba(255, 255, 255, 0.85);
+  border-radius: var(--radius-xl);
+  padding: 2rem 2.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.15rem;
+}
+
+.code-tag-badge-row {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.code-number-pill {
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  font-weight: 800;
+  padding: 0.3rem 0.95rem;
+  background: var(--neu-surface);
+  box-shadow: var(--shadow-neu-inset-sm);
+  color: var(--color-deep-orange);
+  border: 1px solid rgba(255, 94, 58, 0.35);
+  border-radius: var(--radius-full);
+}
+
+.code-category-pill {
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  font-weight: 800;
+  padding: 0.3rem 0.95rem;
+  background: var(--neu-surface);
+  box-shadow: var(--shadow-neu-sm);
+  color: var(--color-text-sub);
+  border: 1px solid rgba(255, 255, 255, 0.8);
+  border-radius: var(--radius-full);
+}
+
+.code-experiment-title {
+  font-family: var(--font-display);
+  font-size: clamp(1.4rem, 2.5vw, 1.85rem);
+  font-weight: 900;
+  color: var(--color-text-main);
+  line-height: 1.3;
+}
+
+.code-aim-objective-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0.75rem;
+  padding: 1.15rem 1.35rem;
+  background: var(--neu-surface);
+  box-shadow: var(--shadow-neu-inset);
+  border-radius: var(--radius-md);
+  font-size: 0.95rem;
+  color: var(--color-text-sub);
+}
+
+/* ==========================================================================
+   Action Companion Bar (Big Coral Neumorphic COPY CODE Button & Companion Cat)
+   ========================================================================== */
+
+.action-companion-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.25rem;
+  flex-wrap: wrap;
+}
+
+.copy-button-container {
+  flex: 1;
+  min-width: 260px;
+}
+
+/* Big Neumorphic Coral COPY CODE Button (Styled after BUY / CH+ buttons in reference) */
+.btn-big-copy-neu {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.85rem;
+  padding: 1.15rem 2.25rem;
+  font-family: var(--font-display);
+  font-size: 1.25rem;
+  font-weight: 900;
+  letter-spacing: 0.03em;
+  color: #FFFFFF;
+  background: var(--color-coral-gradient);
+  box-shadow: 6px 6px 16px rgba(240, 76, 40, 0.45), -5px -5px 14px #FFFFFF;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: var(--radius-full);
+  cursor: pointer;
+  user-select: none;
+  transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.btn-big-copy-neu svg {
+  width: 24px;
+  height: 24px;
+}
+
+.btn-big-copy-neu:hover {
+  transform: translateY(-2px);
+  box-shadow: 8px 8px 20px rgba(240, 76, 40, 0.55), -6px -6px 16px #FFFFFF;
+}
+
+.btn-big-copy-neu:active {
+  transform: translateY(1px);
+  background: var(--color-coral-gradient-active);
+  box-shadow: inset 3px 3px 7px rgba(160, 30, 10, 0.6), inset -3px -3px 7px rgba(255, 140, 110, 0.4);
+}
+
+.btn-big-copy-neu.copied {
+  background: linear-gradient(135deg, #10B981, #059669);
+  box-shadow: 6px 6px 16px rgba(16, 185, 129, 0.45), -5px -5px 14px #FFFFFF;
+}
+
+/* Companion Cat Box (Raised Soft Card) */
+.companion-cat-box {
+  display: flex;
+  align-items: center;
+  gap: 0.95rem;
+  background: var(--neu-surface);
+  box-shadow: var(--shadow-neu-sm);
+  border: 1px solid rgba(255, 255, 255, 0.85);
+  border-radius: var(--radius-lg);
+  padding: 0.55rem 1.15rem 0.55rem 0.65rem;
+  cursor: pointer;
+  user-select: none;
+  transition: all 0.2s ease;
+}
+
+.companion-cat-box:hover {
+  transform: scale(1.02);
+  box-shadow: var(--shadow-neu-flat);
+}
+
+.companion-cat-avatar {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  overflow: hidden;
+  background: var(--neu-surface);
+  box-shadow: var(--shadow-neu-inset-sm);
+  border: 1px solid rgba(255, 255, 255, 0.8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.companion-bubble-content {
+  display: flex;
+  flex-direction: column;
+}
+
+.companion-speaker {
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  font-weight: 800;
+  color: var(--color-deep-orange);
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.companion-quote {
+  font-family: var(--font-display);
+  font-size: 0.88rem;
+  font-weight: 800;
+  color: var(--color-text-main);
+}
+
+.btn-download-neu {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  padding: 0.9rem 1.5rem;
+  font-family: var(--font-display);
+  font-size: 0.95rem;
+  font-weight: 800;
+  color: var(--color-text-main);
+  background: var(--neu-surface);
+  box-shadow: var(--shadow-neu-sm);
+  border: 1px solid rgba(255, 255, 255, 0.85);
+  border-radius: var(--radius-full);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-download-neu:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-neu-flat);
+  color: var(--color-deep-orange);
+}
+
+.btn-download-neu:active {
+  transform: translateY(1px);
+  box-shadow: var(--shadow-neu-inset-sm);
+}
+
+/* ==========================================================================
+   Code IDE Window (Dark Slate Chassis with Soft Lighting)
+   ========================================================================== */
+
+.code-ide-window {
+  background: var(--bg-code-ide);
+  box-shadow: 10px 10px 24px var(--neu-shadow-dark), -8px -8px 20px var(--neu-shadow-light);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: var(--radius-xl);
+  overflow: hidden;
+  position: relative;
+}
+
+.code-ide-header {
+  background: var(--bg-code-header);
+  border-bottom: 1.5px solid rgba(255, 255, 255, 0.08);
+  padding: 0.85rem 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.window-dots {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.ide-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  box-shadow: inset 1px 1px 2px rgba(0, 0, 0, 0.4);
+}
+
+.ide-dot.red { background: #EF4444; }
+.ide-dot.yellow { background: #F59E0B; }
+.ide-dot.green { background: #10B981; }
+
+.ide-tab {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.35rem 0.95rem;
+  background: rgba(255, 255, 255, 0.07);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: var(--radius-sm);
+  color: #FFFFFF;
+  font-family: var(--font-mono);
+  font-size: 0.82rem;
+  font-weight: 700;
+}
+
+.ide-stats {
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: #94A3B8;
+}
+
+.code-scroll-container {
+  display: flex;
+  overflow-x: auto;
+  max-height: 650px;
+  padding: 1.35rem 0;
+  font-family: var(--font-mono);
+  font-size: 0.92rem;
+  line-height: 1.65;
+}
+
+.ide-line-numbers {
+  padding: 0 1.25rem 0 1.5rem;
+  color: #475569;
+  text-align: right;
+  user-select: none;
+  font-family: var(--font-mono);
+  white-space: pre;
+  border-right: 1.5px solid rgba(255, 255, 255, 0.08);
+}
+
+.code-pre-element {
+  padding: 0 1.5rem;
+  flex: 1;
+  overflow-x: visible;
+  font-family: var(--font-mono);
+  color: #F8FAFC;
+}
+
+/* Syntax Highlighting Tokens (Vibrant Java Theme) */
+.token-directive { color: #F43F5E; font-weight: 700; }
+.token-keyword { color: #38BDF8; font-weight: 700; }
+.token-type { color: #C084FC; font-weight: 700; }
+.token-string { color: #34D399; }
+.token-number { color: #FBBF24; }
+.token-comment { color: #64748B; font-style: italic; }
+
+/* Terminal Output Box */
+.output-box-neu {
+  background: #0B0E14;
+  box-shadow: var(--shadow-neu-raised);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+}
+
+.output-toggle-header {
+  background: #141923;
+  padding: 0.85rem 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+  user-select: none;
+  font-family: var(--font-display);
+  font-size: 0.9rem;
+  font-weight: 800;
+  color: #F8FAFC;
+  border-bottom: 1.5px solid rgba(255, 255, 255, 0.08);
+}
+
+.output-terminal-badge {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  font-weight: 800;
+  padding: 0.2rem 0.55rem;
+  border-radius: var(--radius-full);
+  background: #10B981;
+  color: #064E3B;
+}
+
+.output-terminal-pre {
+  padding: 1.25rem 1.5rem;
+  font-family: var(--font-mono);
+  font-size: 0.88rem;
+  color: #4ADE80;
+  background: #0B0E14;
+  white-space: pre-wrap;
+  line-height: 1.55;
+  overflow-x: auto;
+}
+
+/* ==========================================================================
+   Splash Screen ("MASALA DOSA?" Recreation from User Doodle)
+   ========================================================================== */
+
+.splash-screen-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 99999;
+  background: var(--neu-base);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+  opacity: 1;
+  visibility: visible;
+  transition: opacity 0.4s ease, visibility 0.4s ease;
+}
+
+.splash-screen-overlay.fade-out {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+/* Outer Card matching reference Image 2 */
+.splash-card-neu {
+  background: #FAF4E8;
+  border: 3px solid #241A15;
+  box-shadow: 14px 16px 0px #241A15;
+  border-radius: 36px;
+  padding: 1.5rem 1.6rem 1.25rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  max-width: 380px;
+  width: 100%;
+  animation: splashPopIn 0.45s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+@keyframes splashPopIn {
+  0% { transform: scale(0.88); opacity: 0; }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+.splash-img-wrapper {
+  width: 100%;
+  max-width: 280px;
+  max-height: 360px;
+  border-radius: 26px;
+  overflow: hidden;
+  background: transparent;
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.splash-text {
+  font-family: var(--font-display);
+  font-size: clamp(2.2rem, 5.5vw, 2.85rem);
+  font-weight: 900;
+  letter-spacing: -0.01em;
+  color: #241A15;
+  margin-bottom: 1.25rem;
+  line-height: 1.1;
+  text-transform: uppercase;
+}
+
+.splash-text .orange-question {
+  color: #F28C28;
+  font-weight: 900;
+}
+
+.splash-timer-track {
+  width: 100%;
+  height: 10px;
+  background: #FAF4E8;
+  border: 2.2px solid #241A15;
+  border-radius: var(--radius-full);
+  overflow: hidden;
+  padding: 1px;
+}
+
+.splash-timer-fill {
+  height: 100%;
+  width: 0%;
+  background: #F28C28;
+  border-radius: var(--radius-full);
+  animation: timerProgress 1.5s linear forwards;
+}
+
+@keyframes timerProgress {
+  0% { width: 0%; }
+  100% { width: 100%; }
+}
+
+/* ==========================================================================
+   Notification Toast (Floating Neumorphic Pill)
+   ========================================================================== */
+
+.toast-container {
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  z-index: 10000;
+  pointer-events: none;
+}
+
+.neu-toast {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.85rem;
+  padding: 0.85rem 1.5rem;
+  background: var(--neu-surface);
+  box-shadow: var(--shadow-neu-raised);
+  border: 1px solid rgba(255, 255, 255, 0.9);
+  border-radius: var(--radius-full);
+  font-family: var(--font-display);
+  font-size: 0.95rem;
+  font-weight: 800;
+  color: var(--color-text-main);
+  opacity: 0;
+  transform: translateY(20px);
+  transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.neu-toast.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.toast-cat-mini {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  box-shadow: var(--shadow-neu-sm);
+  flex-shrink: 0;
+  overflow: hidden;
+}
+
+/* ==========================================================================
+   Footer
+   ========================================================================== */
+
+.site-footer {
+  text-align: center;
+  padding: 2.5rem 1rem 3rem;
+  color: var(--color-text-muted);
+  font-family: var(--font-display);
+  font-size: 0.92rem;
+  font-weight: 700;
+  position: relative;
+  z-index: 2;
+  border-top: 1px solid rgba(163, 177, 198, 0.35);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.9);
+  width: min(1200px, calc(100% - 2rem));
+  margin: 0 auto;
+}
+
+.footer-quote {
+  font-style: italic;
+  color: var(--color-deep-orange);
+  margin-top: 0.4rem;
+  font-weight: 600;
+}
+
+/* ==========================================================================
+   Responsive Adaptations
+   ========================================================================== */
+
+@media (max-width: 900px) {
+  .hero-layout {
+    grid-template-columns: 1fr;
+    text-align: center;
+  }
+
+  .hero-content {
+    align-items: center;
+  }
+
+  .hero-mascot-card {
+    margin: 1rem auto 0;
+  }
+
+  .neu-card {
+    grid-template-columns: auto 1fr auto;
+    gap: 1.1rem;
+    padding: 1.25rem;
+  }
+
+  .card-arrow-box {
+    display: none;
+  }
+
+  .action-companion-bar {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .companion-cat-box {
+    justify-content: center;
+  }
+}
+
+@media (max-width: 600px) {
+  .site-header {
+    width: calc(100% - 1rem);
+    padding: 0.65rem 1.15rem;
+    top: 0.5rem;
+  }
+
+  .hero-box {
+    padding: 1.65rem 1.25rem;
+  }
+
+  .btn-big-copy-neu {
+    font-size: 1.1rem;
+    padding: 1rem 1.35rem;
+  }
+
+  .ide-line-numbers {
+    display: none;
+  }
+
+  .toast-container {
+    left: 1rem;
+    right: 1rem;
+    bottom: 1rem;
+  }
+
+  .neu-toast {
+    justify-content: center;
+    width: 100%;
+  }
+}
+
+/* ==========================================================================
+   Reduced-Motion Accessibility
+   ========================================================================== */
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
